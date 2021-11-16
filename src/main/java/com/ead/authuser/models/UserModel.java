@@ -1,5 +1,7 @@
 package com.ead.authuser.models;
 
+import com.ead.authuser.enums.UserStatus;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
