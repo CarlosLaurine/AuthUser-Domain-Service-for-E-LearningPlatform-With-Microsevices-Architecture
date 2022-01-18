@@ -97,6 +97,7 @@ public class UserController {
     public ResponseEntity<Object> updatePassword(@PathVariable(value = "userId") UUID userId,
                                                  @RequestBody @Validated(UserDTO.UserView.PasswordPut.class)
                                                  @JsonView(UserDTO.UserView.PasswordPut.class) UserDTO dto) {
+        log.debug("PUT Method updatePassword userDto received {} ", dto.toString());
         Optional<UserModel> optional = userService.findById(userId);
         if (!optional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with id = " + userId + " not found");
@@ -113,6 +114,9 @@ public class UserController {
 
             userService.save(userModel);
 
+            log.debug("PUT Method updatePassword userModel saved userId {} ", userModel.getUserId());
+            log.info("Password successfully updated for userId {} ", userModel.getUserId());
+
             return ResponseEntity.status(HttpStatus.OK).body("Password Successfully Updated!");
         }
     }
@@ -121,6 +125,7 @@ public class UserController {
     public ResponseEntity<Object> updateImage(@PathVariable(value = "userId") UUID userId,
                                                  @RequestBody @Validated(UserDTO.UserView.ImagePut.class)
                                                  @JsonView(UserDTO.UserView.ImagePut.class) UserDTO dto) {
+        log.debug("PUT Method updateImage userDto received {} ", dto.toString());
         Optional<UserModel> optional = userService.findById(userId);
         if (!optional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with id = " + userId + " not found");
@@ -132,6 +137,8 @@ public class UserController {
             userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
 
             userService.save(userModel);
+            log.debug("PUT Method updateImage userModel saved userId {} ", userModel.getUserId());
+            log.info("Image successfully updated userId {} ", userModel.getUserId());
 
             return ResponseEntity.status(HttpStatus.OK).body(userModel);
         }
