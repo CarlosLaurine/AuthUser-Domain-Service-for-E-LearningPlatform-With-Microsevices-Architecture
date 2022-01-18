@@ -56,13 +56,13 @@ public class UserController {
 
     @DeleteMapping(value = "/{userId}")
     public ResponseEntity<Object> deleteUser(@PathVariable(value = "userId") UUID userId) {
-        log.debug("DELETE Method deleteUser userId received {} ", userId.toString());
+        log.debug("DELETE Method deleteUser userId received {} ", userId);
         Optional<UserModel> optional = userService.findById(userId);
         if (!optional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with id = " + userId + " not found");
         } else {
             userService.delete(optional.get());
-            log.debug("DELETE Method deleteUser execute for User {} ", optional.get().toString());
+            log.debug("DELETE Method deleteUser execute for userId {} ", optional.get().getUserId());
             log.info("User Successfully Deleted userId {} ", userId);
             return ResponseEntity.status(HttpStatus.OK).body("User with id = " + userId + " successfully deleted");
         }
@@ -86,7 +86,7 @@ public class UserController {
             userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
 
             userService.save(userModel);
-            log.debug("PUT Method updateUser userModel saved {} ", userModel.toString());
+            log.debug("PUT Method updateUser userModel saved userId {} ", userModel.getUserId());
             log.info("User Successfully Updated userId {} ", userModel.getUserId());
 
             return ResponseEntity.status(HttpStatus.OK).body(userModel);
