@@ -30,7 +30,7 @@ public class CourseClient {
     @Autowired
     private RestTemplate restTemplate;
 
-    private String REQUEST_URI = "http://localhost:8082";
+    private String REQUEST_URI = "http://localhost:8087";
 
     public Page<CourseDTO> getAllCoursesByUser(UUID userId, Pageable pageable){
         List<CourseDTO> searchResult = null;
