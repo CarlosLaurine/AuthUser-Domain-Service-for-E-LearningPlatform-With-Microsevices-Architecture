@@ -26,3 +26,9 @@ logging:
     org.springframework.web: DEBUG
     org.hibernate: INFO
 
+ead:
+  api:
+    url:
+      course: 'http://localhost:8087'
+
+
