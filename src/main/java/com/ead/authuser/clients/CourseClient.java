@@ -2,11 +2,14 @@ package com.ead.authuser.clients;
 
 import com.ead.authuser.dtos.CourseDTO;
 import com.ead.authuser.dtos.ResponsePageDTO;
+import com.ead.authuser.services.UserCourseService;
+import com.ead.authuser.services.UserService;
 import com.ead.authuser.services.UtilsService;
 import com.ead.authuser.services.impl.UserCourseServiceImpl;
 import com.ead.authuser.services.impl.UtilsServiceImpl;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -30,11 +33,12 @@ public class CourseClient {
     @Autowired
     private RestTemplate restTemplate;
 
-    private String REQUEST_URI = "http://localhost:8087";
+    @Value("${ead.api.url.course}")
+    private String REQUEST_URL_COURSE;
 
     public Page<CourseDTO> getAllCoursesByUser(UUID userId, Pageable pageable){
         List<CourseDTO> searchResult = null;
-        String requestUrl = utilsService.generateUrl(userId, pageable);
+        String requestUrl = REQUEST_URL_COURSE + utilsService.generateUrlGetAllCoursesByUser(userId, pageable);
         log.debug("Request URL: {} ", requestUrl);
         log.info("Request URL: {} ", requestUrl);
         try{
@@ -48,4 +52,7 @@ public class CourseClient {
         log.info("Ending request /courses userId {} ", userId);
         return new PageImpl<>(searchResult);
     }
+
+
+
 }
