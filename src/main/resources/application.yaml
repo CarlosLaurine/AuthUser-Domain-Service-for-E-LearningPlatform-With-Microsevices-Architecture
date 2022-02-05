@@ -32,7 +32,7 @@ logging:
 ead:
   api:
     url:
-      course: 'http://localhost:8087'
+      course: 'http://ead-course-service'
 
 eureka:
   client:
