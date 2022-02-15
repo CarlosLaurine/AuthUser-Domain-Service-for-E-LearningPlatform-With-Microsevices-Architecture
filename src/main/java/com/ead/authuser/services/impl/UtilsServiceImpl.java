@@ -14,4 +14,9 @@ public class UtilsServiceImpl implements UtilsService {
         return "/courses?userId=" + userId + "&page=" + pageable.getPageNumber() + "&size="
                 + pageable.getPageSize() + "&sort=" + pageable.getSort().toString().replaceAll(":", ",");
     }
+
+    @Override
+    public String generateUrlDeleteUserInCourse(UUID userId) {
+        return "/courses/users/" + userId;
+    }
 }
