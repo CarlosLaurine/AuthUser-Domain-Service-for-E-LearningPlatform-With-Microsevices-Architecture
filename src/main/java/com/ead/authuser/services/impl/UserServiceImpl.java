@@ -1,12 +1,9 @@
 package com.ead.authuser.services.impl;
 
 import com.ead.authuser.clients.CourseClient;
-import com.ead.authuser.models.UserCourseModel;
 import com.ead.authuser.models.UserModel;
-import com.ead.authuser.repositories.UserCourseRepository;
 import com.ead.authuser.repositories.UserRepository;
 import com.ead.authuser.services.UserService;
-import com.ead.authuser.specifications.SpecificationTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,9 +22,6 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
     @Autowired
-    UserCourseRepository userCourseRepository;
-
-    @Autowired
     CourseClient courseClient;
 
     @Override
@@ -44,16 +38,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(UserModel userModel) {
 
-        boolean userCourseBindingsExist = false;
-        List<UserCourseModel> subscriptions = userCourseRepository.findAllSubscriptionsFromAUser(userModel.getUserId());
-        if(!subscriptions.isEmpty()){
-            userCourseRepository.deleteAll(subscriptions);
-            userCourseBindingsExist = true;
-        }
         userRepository.delete(userModel);
-        if(userCourseBindingsExist){
-            courseClient.deleteUserInCourse(userModel.getUserId());
-        }
     }
 
     @Override
