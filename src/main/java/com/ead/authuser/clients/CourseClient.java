@@ -2,11 +2,7 @@ package com.ead.authuser.clients;
 
 import com.ead.authuser.dtos.CourseDTO;
 import com.ead.authuser.dtos.ResponsePageDTO;
-import com.ead.authuser.services.UserCourseService;
-import com.ead.authuser.services.UserService;
 import com.ead.authuser.services.UtilsService;
-import com.ead.authuser.services.impl.UserCourseServiceImpl;
-import com.ead.authuser.services.impl.UtilsServiceImpl;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,11 +47,6 @@ public class CourseClient {
         }
         log.info("Ending request /courses userId {} ", userId);
         return new PageImpl<>(searchResult);
-    }
-
-    public void deleteUserInCourse(UUID userId){
-        String url = REQUEST_URL_COURSE + utilsService.generateUrlDeleteUserInCourse(userId);
-        restTemplate.exchange(url, HttpMethod.DELETE, null, String.class);
     }
 
 }
