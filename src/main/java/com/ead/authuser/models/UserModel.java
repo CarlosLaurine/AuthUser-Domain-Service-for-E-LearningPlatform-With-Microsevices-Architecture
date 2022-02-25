@@ -5,14 +5,12 @@ import com.ead.authuser.enums.UserType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -53,11 +51,4 @@ public class UserModel extends RepresentationModel<UserModel> implements Seriali
     @Column(nullable = false)
     private LocalDateTime lastUpdateDate;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private Set<UserCourseModel> userCourses;
-
-    public UserCourseModel convertToUserCourseModel(UUID courseId){
-        return new UserCourseModel(null, courseId, this);
-    }
 }
