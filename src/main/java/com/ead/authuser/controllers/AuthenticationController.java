@@ -48,7 +48,7 @@ public class AuthenticationController {
             model.setUserType(UserType.STUDENT);
             model.setCreationDate(LocalDateTime.now(ZoneId.of("UTC")));
             model.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
-            userService.save(model);
+            userService.saveUser(model);
             log.debug("POST Method registerUser userId saved {} ", model.getUserId());
             log.info("User Successfully Saved userId {} ", model.getUserId());
             return ResponseEntity.status(HttpStatus.CREATED).body(model);
