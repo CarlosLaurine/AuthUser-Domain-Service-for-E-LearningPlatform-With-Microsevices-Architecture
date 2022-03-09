@@ -1,7 +1,9 @@
 package com.ead.authuser.services.impl;
 
 import com.ead.authuser.clients.CourseClient;
+import com.ead.authuser.enums.ActionType;
 import com.ead.authuser.models.UserModel;
+import com.ead.authuser.publishers.UserEventPublisher;
 import com.ead.authuser.repositories.UserRepository;
 import com.ead.authuser.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +21,13 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    CourseClient courseClient;
+    private CourseClient courseClient;
+
+    @Autowired
+    private UserEventPublisher userEventPublisher;
 
     @Override
     public List<UserModel> findAll() {
@@ -42,8 +47,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void save(UserModel model) {
-        userRepository.save(model);
+    public UserModel save(UserModel model) {
+        return userRepository.save(model);
     }
 
     @Override
@@ -54,6 +59,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public UserModel saveUser(UserModel userModel) {
+        userModel = save(userModel);
+        userEventPublisher.publishUserEvent(userModel.convertToUserEventDTO(), ActionType.CREATE);
+        return userModel;
     }
 
     @Override
