@@ -37,6 +37,9 @@ ead:
   api:
     url:
       course: 'http://ead-course-service/ead-course'
+  broker:
+    exchange:
+      user-event: ead.userevent
 
 eureka:
   client:
