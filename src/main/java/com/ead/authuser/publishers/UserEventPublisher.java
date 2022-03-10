@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class UserEventPublisher {
 
     @Autowired
-    RabbitTemplate rabbitTemplate;
+    private RabbitTemplate rabbitTemplate;
 
     @Value(value = "${ead.broker.exchange.user-event}")
     private String exchangeUserEvent;
