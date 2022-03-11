@@ -63,7 +63,7 @@ public class UserController {
         if (!optional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with id = " + userId + " not found");
         } else {
-            userService.delete(optional.get());
+            userService.deleteUser(optional.get());
             log.debug("DELETE Method deleteUser execute for userId {} ", optional.get().getUserId());
             log.info("User Successfully Deleted userId {} ", userId);
             return ResponseEntity.status(HttpStatus.OK).body("User with id = " + userId + " successfully deleted");
@@ -87,7 +87,7 @@ public class UserController {
 
             userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
 
-            userService.save(userModel);
+            userService.updateUser(userModel);
             log.debug("PUT Method updateUser userModel saved userId {} ", userModel.getUserId());
             log.info("User Successfully Updated userId {} ", userModel.getUserId());
 
@@ -96,10 +96,10 @@ public class UserController {
     }
 
     @PutMapping(value = "/{userId}/password")
-    public ResponseEntity<Object> updatePassword(@PathVariable(value = "userId") UUID userId,
+    public ResponseEntity<Object> updatePassword (@PathVariable(value = "userId") UUID userId,
                                                  @RequestBody @Validated(UserDTO.UserView.PasswordPut.class)
                                                  @JsonView(UserDTO.UserView.PasswordPut.class) UserDTO dto) {
-        log.debug("PUT Method updatePassword userDto received {} ", dto.toString());
+        log.debug("PUT Method  userDto received {} ", dto.toString());
         Optional<UserModel> optional = userService.findById(userId);
         if (!optional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with id = " + userId + " not found");
@@ -114,9 +114,9 @@ public class UserController {
             userModel.setPassword(dto.getPassword());
             userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
 
-            userService.save(userModel);
+            userService.updatePassword(userModel);
 
-            log.debug("PUT Method updatePassword userModel saved userId {} ", userModel.getUserId());
+            log.debug("PUT Method  userModel saved userId {} ", userModel.getUserId());
             log.info("Password successfully updated for userId {} ", userModel.getUserId());
 
             return ResponseEntity.status(HttpStatus.OK).body("Password Successfully Updated!");
@@ -138,7 +138,7 @@ public class UserController {
             userModel.setImageUrl(dto.getImageURL());
             userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
 
-            userService.save(userModel);
+            userService.updateUser(userModel);
             log.debug("PUT Method updateImage userModel saved userId {} ", userModel.getUserId());
             log.info("Image successfully updated userId {} ", userModel.getUserId());
 
