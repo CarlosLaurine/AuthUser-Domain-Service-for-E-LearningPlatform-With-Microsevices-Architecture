@@ -54,6 +54,15 @@ resilience4j:
       default-retry-instance:
         maxRetryAttempts: 3
         waitDuration: 5s
+  circuitbreaker:
+    instances:
+      default-circuitbreaker-instance:
+        slidingWindowSize: 30
+        permittedNumberOfCallsInHalfOpenState: 2
+        slidingWindowType: TIME_BASED
+        minimumNumberOfCalls: 2
+        waitDurationInOpenState: 30s
+        failureRateThreshold: 80
 
 
 
