@@ -60,4 +60,10 @@ public class CourseClient {
         return new PageImpl<>(searchResult);
     }
 
+    public Page<CourseDTO> circuitBreakerFallback(UUID userId, Pageable pageable, Throwable exception) {
+        log.error("Inside circuitBreakerFallback Method, caused by -> {}", exception.toString());
+        List<CourseDTO> searchResult = new ArrayList<>();
+        return new PageImpl<>(searchResult);
+    }
+
 }
