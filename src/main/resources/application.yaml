@@ -12,6 +12,8 @@ spring:
     config:
       dicovery:
         serviceId: ead-config-server
+      username: configServerClient
+      password: 'secretead123cs'
 #  datasource:
 #    url: jdbc:postgresql://localhost:5434/ead-authuser-v2
 #    username: postgres
