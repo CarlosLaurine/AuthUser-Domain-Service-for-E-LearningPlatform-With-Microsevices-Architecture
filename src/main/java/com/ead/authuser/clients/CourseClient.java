@@ -12,6 +12,8 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -37,19 +39,19 @@ public class CourseClient {
 
     //@Retry(name = "default-retry-instance", fallbackMethod = "retryFallback")
     @CircuitBreaker(name = "default-circuitbreaker-instance")
-    public Page<CourseDTO> getAllCoursesByUser(UUID userId, Pageable pageable){
+    public Page<CourseDTO> getAllCoursesByUser(UUID userId, Pageable pageable, String authToken){
         List<CourseDTO> searchResult = null;
         String requestUrl = REQUEST_URL_COURSE + utilsService.generateUrlGetAllCoursesByUser(userId, pageable);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", authToken);
+        HttpEntity<String> requestEntity = new HttpEntity<String>("parameters", headers);
         log.debug("Request URL: {} ", requestUrl);
         log.info("Request URL: {} ", requestUrl);
-        try{
-            ParameterizedTypeReference<ResponsePageDTO<CourseDTO>> responseType = new ParameterizedTypeReference<>() {};
-            ResponseEntity<ResponsePageDTO<CourseDTO>> responseEntity = restTemplate.exchange(requestUrl, HttpMethod.GET,null, responseType);
-            searchResult = responseEntity.getBody().getContent();
-            log.debug("Response Number of Elements (Courses): {} ", searchResult.size());
-        } catch (HttpStatusCodeException exception){
-            log.error("Error request /courses endpoint exception {} ", exception);
-        }
+
+        ParameterizedTypeReference<ResponsePageDTO<CourseDTO>> responseType = new ParameterizedTypeReference<>() {};
+        ResponseEntity<ResponsePageDTO<CourseDTO>> responseEntity = restTemplate.exchange(requestUrl, HttpMethod.GET,requestEntity, responseType);
+        searchResult = responseEntity.getBody().getContent();
+        log.debug("Response Number of Elements (Courses): {} ", searchResult.size());
         log.info("Ending request /courses userId {} ", userId);
         return new PageImpl<>(searchResult);
     }
